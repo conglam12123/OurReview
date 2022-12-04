@@ -1,0 +1,59 @@
+
+.register-body{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+}
+.register-logo{
+    width:200px;
+    margin:auto;
+}
+
+.register-input:first-of-type{
+    margin-top: 30px;
+}
+.register-input {
+    /*width:80%;*/
+    /*margin-right:20px;*/
+    margin-top: 20px;
+    display:flex;
+    align-items:center;
+}
+.register-input > span {
+    display:inline-block;
+    width:100px;
+    font-size: 14px;
+}
+.required::after {
+    content: "*";
+    color: red;
+}
+.register-input > input{
+    border-radius: 4px;
+    width: 190px;
+    font-size: 14px;
+    height: 24px;
+}
+.register-action {
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.register-action > input {
+    background-color: white;
+    border-radius: 4px;
+    width: 80px;
+    height: 30px;
+}
+.register-action > input:hover {
+    background-color:#89c7bd ;
+    cursor: pointer;
+}
+.register-action > span {
+    font-size: 12px;
+}
+.login-errormsg {
+    text-align: center;
+    color: red;
+}

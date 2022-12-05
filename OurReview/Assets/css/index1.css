@@ -1,4 +1,4 @@
-
+﻿
 .page {
     margin: auto;
     width: 100%;
@@ -16,12 +16,20 @@
     justify-content: space-between;
 
 }
+/*------------------------ -----logo---------------------------------------------*/
 .header__logo{
+    margin-left: 20px;
     display: inline-block;
-    background-color: red;
     width: 50px;
     height: 50px;
 }
+.logo__image {
+    margin: 2.5px;
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+}
+/*-------------------------------- TÌM KIẾM ------------------------------*/
 .header__search{
     display:inline-flex;
     align-items:center;
@@ -55,6 +63,7 @@
     font-size:12px;
     border:none;
     height:30px;
+    border-left:solid 1px #cccccc;
 }
 .header__search-option:hover{
     cursor:pointer;
@@ -74,15 +83,33 @@
     background-color:orange;
     color:white;
 }
-
-
-    .header__account {
-        display: inline-block;
-    }
-.logo__image{
+/*---------------------------------------------Tài khoản-----------------------*/
+.header__account {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+.header__account--user > .header__account-link{
+    display:none;
+}
+.header__account--anonymous > .header__account-avatar{
+    display:none;
+}
+.header__account-link{
+    text-decoration:none;
+}
+.header__account-link:visited{
+    text-decoration:none;
+    color:var(--text-color);
+}
+.header__account-link:hover{
+    color:orange;
+}
+.header__account-avatar > img {
     margin: 2.5px;
-    width: 45px;
-    height: 45px;
-    border-radius: 25px;
+    width: 35px;
+    height: 35px;
+    border-radius: 15px;
 }
 

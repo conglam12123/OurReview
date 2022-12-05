@@ -18,10 +18,11 @@
     <form id="form1" runat="server">
         <div class="page">
             <div class="header">
-                <div class="header__logo">
+                
+                <a class="header__logo" href="Index.aspx">
                     <img class="logo__image" src="./Assets/img/small_logo.png" title="OurReview" alt="Mạng xã hội review"/>
                 
-                </div>
+                </a>
                 <div class="header__search">
                     <asp:TextBox runat="server" placeholder="Tìm kiếm..."
                         ID="tbSearch" CssClass="header__search-box">
@@ -41,8 +42,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="header__account">
-
+                <div class="header__account header__account--user">
+                    <a class="header__account-link" href="Login.aspx">Đăng nhập/Đăng ký</a>
+                    <a href="#" class="header__account-avatar">
+                        <img  src="./Assets/img/avatar/DefaultAvatar.png" 
+                            title="Avatar" alt="Ảnh đại diện"/>
+                    </a>
                 </div>
             </div> 
 

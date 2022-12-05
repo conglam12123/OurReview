@@ -48,6 +48,14 @@
                         <img  src="./Assets/img/avatar/DefaultAvatar.png" 
                             title="Avatar" alt="Ảnh đại diện"/>
                     </a>
+                    <ul class="header__user-option">
+                        <li class="user__option-item">
+                            <a href="#">Sửa thông tin tài khoản</a>
+                        </li>
+                        <li class="user__option-item">
+                            <a href="#">Đăng xuất</a>
+                        </li>
+                    </ul>
                 </div>
             </div> 
 

@@ -25,17 +25,17 @@ namespace OurReview
 
         protected void btnRegister_Click(object sender, EventArgs e)
         {
-            string filePath = "./Assets/img/avatar/DefaultAvatar.png";
+            string fileName = "./Assets/img/avatar/DefaultAvatar.png";
             if(fuUserAvatar.HasFile)
             {
                 if (checkFileType(fuUserAvatar.FileName))
                 {
-                    String fileName = "Assets/img/avatar/" + DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + fuUserAvatar.FileName;
-                    filePath = MapPath(fileName);
+                     fileName = "./Assets/img/avatar/" + DateTime.Now.ToString("ddMMyyyy_hhmmss_tt_") + fuUserAvatar.FileName;
+                    String filePath = MapPath(fileName);
                     fuUserAvatar.SaveAs(filePath);
                 }
             };
-            if (InsertUser(filePath) != 0)
+            if (InsertUser(fileName) != 0)
             {
                 Response.Write("<script>alert('Đăng ký thành công!')</script>");
 

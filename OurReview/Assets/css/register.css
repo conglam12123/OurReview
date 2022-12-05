@@ -1,8 +1,12 @@
 
-.register-body{
-    display:flex;
-    align-items:center;
-    flex-direction:column;
+html {
+    background-color: #e1f3f0;
+}
+.register-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
 }
 .register-logo{
     width:200px;

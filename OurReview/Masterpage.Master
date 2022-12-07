@@ -1,10 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="OurReview.Index" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Masterpage.Master.cs" Inherits="OurReview.Site1" %>
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
-    <title>OurReview</title>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
@@ -13,58 +15,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" 
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="./Assets/js/master.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="page">
             <div class="header">
-                
-                <a class="header__logo" href="Index.aspx">
+                <div class="grid wrapper__header">
+                    <a class="header__logo" href="Index.aspx">
                     <img class="logo__image" src="./Assets/img/small_logo.png" title="OurReview" alt="Mạng xã hội review"/>
-                
                 </a>
                 <div class="header__search">
                     <asp:TextBox runat="server" placeholder="Tìm kiếm..."
                         ID="tbSearch" CssClass="header__search-box">
                     </asp:TextBox>
                     <div> 
-                        <asp:DropDownList CssClass="header__search-option" runat="server" ID="lbxSearchOption">
-                            <asp:ListItem id="liUser" Value="soUser">
+                        <asp:DropDownList CssClass="header__search-option" runat="server" ID="drlSearchOption">
+                            <asp:ListItem id="liUser" Value="0">
                                 Tìm người dùng
                             </asp:ListItem>
-                            <asp:ListItem id="liPost" Value="soPost">
+                            <asp:ListItem id="liPost" Value="1">
                                 Tìm bài viết
                             </asp:ListItem>
 
                         </asp:DropDownList>
-                        <button class="header__search-button">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
+                        <asp:Button runat="server" ID="btnSearch" CssClass="header__search-button" OnClick="btnSearch_Click" Text="Tìm"/>
                     </div>
                 </div>
-                <div class="header__account header__account--user">
+                <asp:Panel id="pnAccount" runat="server" CssClass="header__account header__account--user">
                     <a class="header__account-link" href="Login.aspx">Đăng nhập/Đăng ký</a>
                     <a href="#" class="header__account-avatar">
-                        <img  src="./Assets/img/avatar/DefaultAvatar.png" 
+                        <asp:Image runat="server" ID="imgAvatar"  
                             title="Avatar" alt="Ảnh đại diện"/>
                     </a>
                     <ul class="header__user-option">
                         <li class="user__option-item">
-                            <a href="#">Sửa thông tin tài khoản</a>
+                            <asp:Button CssClass="option__item-btn" runat="server" ID="btnUpdateProfile" Text="Sửa thông tin tài khoản" OnClick="btnUpdateProfile_Click" />
                         </li>
                         <li class="user__option-item">
-                            <a href="#">Đăng xuất</a>
+                            <asp:Button CssClass="option__item-btn" runat="server" ID="btnLogout" Text="Đăng xuất" OnClick="btnLogout_Click" />
+
                         </li>
                     </ul>
+                </asp:Panel>
                 </div>
             </div> 
-
-
-            <div class="content">
-
+            <div>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
             </div>
             <div class="footer">
-
+                <h3 class="footer__credit">Thiết kế và phát triển bởi N01 - AAW0212022.002</h3>
+                
             </div>
         </div>
     </form>

@@ -20,12 +20,10 @@ namespace OurReview
                 registerLink.HRef = ConfigurationManager.AppSettings["registerurl"];
             }
         }
-
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             User_Login();
         }
-
         private void User_Login ()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
@@ -44,7 +42,12 @@ namespace OurReview
                         {
                             rd.Read();
                             Session["user_id"] = rd.GetInt32(0);
+                            Session["user_avatar"] = rd.GetString(4);
+                            Session["user_name"] = rd.GetString(3);
+
                             Response.Write(Session["user_id"]);
+                            Response.Write("<script>alert('Đăng nhập thành công! bạn sẽ được chuyển đến trang chủ');" +
+                    "location.replace('" + ConfigurationManager.AppSettings["indexurl"] + "')</script>"); ;
                         }
                         else
                         {
@@ -55,15 +58,11 @@ namespace OurReview
                 }
             }
         }
-
         protected String md5Encrypt(String password)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
-
             md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(password));
-
             byte[] result = md5.Hash;
-
             StringBuilder strBuilder = new StringBuilder();
             for (int i = 0; i < result.Length; i++)
             {

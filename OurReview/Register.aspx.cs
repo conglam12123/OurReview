@@ -37,8 +37,8 @@ namespace OurReview
             };
             if (InsertUser(fileName) != 0)
             {
-                Response.Write("<script>alert('Đăng ký thành công!')</script>");
-
+                Response.Write("<script>alert('Đăng ký thành công! bạn sẽ được chuyển đến trang đăng nhập');" +
+                    "location.replace('"+ConfigurationManager.AppSettings["loginurl"]+"')</script>");
             }
             else
             {
@@ -69,7 +69,15 @@ namespace OurReview
                     cmd.Parameters.AddWithValue("@username", tbUsername.Text);
                     cmd.Parameters.AddWithValue("@avatar", avatarPath);
                     cnn.Open();
-                    int result = cmd.ExecuteNonQuery();
+                    int result = 0;
+                    try
+                    {
+                        result = cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        
+                    }
                     cnn.Close();
                     return result;
                 }

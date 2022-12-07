@@ -1,6 +1,6 @@
 
 html {
-    background-color: #e1f3f0;
+    background-color: var(--background-color);
 }
 .register-body {
     display: flex;

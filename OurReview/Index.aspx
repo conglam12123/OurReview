@@ -31,13 +31,18 @@
                         <div class="upload__input">
                             <span>Nhập nội dung bài viết:</span>
                             <asp:TextBox ID="tbPostContent" runat="server" CssClass="upload__content"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="vPostContentUpload" runat="server" 
+                                ControlToValidate="tbPostContent" Display="Dynamic" ErrorMessage="Bạn cần nhập nội dung bài viết" 
+                                ValidationGroup="upload" ForeColor="Red">
+
+                            </asp:RequiredFieldValidator>
                         </div>
                         <div class="upload__picture">
                             <span>Chọn ảnh</span>
                             <asp:FileUpload runat="server" ID="fuPostImage"  />
                         </div>
                         <div class="upload__buttons">
-                            <asp:Button ID="btnUpload" runat="server" text="Đăng bài viết" OnClick="btnUpload_Click"/>
+                            <asp:Button ID="btnUpload" runat="server" text="Đăng bài viết" OnClick="btnUpload_Click" ValidationGroup="upload"/>
                             <asp:Button ID="btnCancelUpload" runat="server" Text="Hủy" OnClick="btnCancelUpload_Click"/>
                         </div>
                     </div>

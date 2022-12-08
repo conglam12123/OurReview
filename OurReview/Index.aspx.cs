@@ -80,13 +80,18 @@ namespace OurReview
 
         protected void btnCancelUpload_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void btnUpload_Click(object sender, EventArgs e)
         {
             if (Session["user_id"] != "")
             {
+                if (tbPostContent.Text=="")
+                {
+                    Response.Write("<script>alert('Hãy nhập nội dung bài viết!!');</script>");
+
+                }
                 string fileName = "";
                 if (fuPostImage.HasFile)
                 {

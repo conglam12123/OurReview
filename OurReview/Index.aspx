@@ -37,8 +37,8 @@
                             <asp:FileUpload runat="server" ID="fuPostImage"  />
                         </div>
                         <div class="upload__buttons">
-                            <asp:Button runat="server" text="Đăng bài viết"/>
-                            <asp:Button runat="server" Text="Hủy" />
+                            <asp:Button ID="btnUpload" runat="server" text="Đăng bài viết" OnClick="btnUpload_Click"/>
+                            <asp:Button ID="btnCancelUpload" runat="server" Text="Hủy" OnClick="btnCancelUpload_Click"/>
                         </div>
                     </div>
                             
@@ -46,25 +46,28 @@
                 <div class="content__post-view"> 
                     <asp:Repeater ID="rptPostsByCategories" runat="server" OnItemDataBound="rptPostsByCategories_ItemDataBound">
                         <ItemTemplate>
-                            <a class="post__view-category" href="Category.aspx?id=<%#Eval("PK_iCategoryID") %>"><%#Eval("sCategoryName") %></a>
+                            <div class="post__view-category">
+                                <a class="post__view-category-header"  href="Category.aspx?id=<%#Eval("PK_iCategoryID") %>"><%#Eval("sCategoryName") %></a>
+                            </div>
                             <asp:HiddenField ID="hfCategoryID" runat="server" Value='<%#Eval("PK_iCategoryID") %>'/>
                             <asp:Repeater runat="server" ID="rptPostsOfCategories">
                                 <ItemTemplate>
-
-                                    <a class="post__user" href="" >
-                                        <img Class="post__user-avatar" src="<%#Eval("sUserAvatar") %>" />
-                                        <span CssClass="post__user-name"><%#Eval("sUserName") %></span>
-                                    </a>
-                                    <span class="post__time"><%#Eval("dPostedDateTime") %></span>
-                                    <p class="post__content"><%#Eval("sPostContent") %></p>
-                                    <img src="<%#Eval("sPostImageUrl") %>"/>
-                                    <div class="post__react">
-                                        <span class="post__like-count">Lượt thích: <%#Eval("likecount") %></span>
-                                        <span class="post__comment-count">Lượt bình luận:<%#Eval("commentcount") %></span>
-                                    </div>
-                                    <div class="post__action">
-                                        <button class="post__action-like"><i class="fa-solid fa-thumbs-up"></i> Thích</button>
-                                        <button claa="post__action-comment"><i class="fa-solid fa-comment"></i>Bình luận</button>
+                                    <div class="post">
+                                        <div class="post__user">
+                                            <a class="post__user-link" href="" >
+                                                <img Class="post__user-avatar" src="<%#Eval("sUserAvatar") %>" />
+                                            </a>
+                                            <a class="post__user-link" href="" >
+                                                <span Class="post__user-name"><%#Eval("sUserName") %></span>
+                                            </a>
+                                            <span class="post__time"><%#Eval("dPostedDateTime") %></span>
+                                        </div>
+                                        <p class="post__content"><%#Eval("sPostContent") %></p>
+                                        <img class="post__image" src="<%#Eval("sPostImageUrl") %>"/>
+                                        <div class="post__action">
+                                            <button class="post__action-like"><i class="fa-solid fa-thumbs-up"></i> Thích (<%#Eval("likecount") %>)</button>
+                                            <button claa="post__action-comment"><i class="fa-solid fa-comment"></i>Bình luận (<%#Eval("commentcount") %>)</button>
+                                        </div>
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>

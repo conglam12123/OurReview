@@ -150,7 +150,7 @@ begin
 	select  a.PK_iPostID,sUserName,sUserAvatar,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
 	from tblPost a 
 		inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
-		inner join (select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+		inner join (select PK_iPostID, COUNT(FK_iPostID) as [likecount]
 			from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
 			group by PK_iPostID) c on a.PK_iPostID = c.PK_iPostID
 		inner join (select PK_iPostID, COUNT(PK_iCommentID) as [commentcount]
@@ -169,7 +169,7 @@ exec sp_getPostByCategoryID 1;
 select  a.PK_iPostID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
 from tblPost a 
 	inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
-	inner join (select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+	inner join (select PK_iPostID, COUNT(FK_iPostID) as [likecount]
 		from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
 		group by PK_iPostID) c on a.PK_iPostID = c.PK_iPostID
 	inner join (select PK_iPostID, COUNT(PK_iCommentID) as [commentcount]
@@ -177,7 +177,7 @@ from tblPost a
 		group by PK_iPostID) d on a.PK_iPostID = d.PK_iPostID
 -- bảng đếm like
 go
-select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+select PK_iPostID, COUNT(b.FK_iPostID) as [likecount]
 from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
 group by PK_iPostID
 --bảng đếm comment

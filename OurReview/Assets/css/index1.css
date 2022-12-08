@@ -266,6 +266,62 @@
     width:1000px;
     border-radius:3px;
 }
+.post__view-category {
+    display:block;
+
+    margin:  5px 5px 5px;
+    padding-top:10px;
+}
+.post__view-category-header {
+    font-size: 26px;
+    text-decoration: none;
+    color: var(--main-color);
+}
+/*--------------------------------------POst--------------------------------------**/
+.post {
+    padding-left:20px;
+    margin-bottom:10px;
+    padding-bottom:10px;
+    padding-top:10px;
+    border:solid 1px #e0e0e0 
+}
+.post__user{
+    display:flex;
+    align-items:center;
+}
+.post__user-link {
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+    color: var(--text-color);
+}
+.post__user-link:hover {
+    
+    color: var(--main-color);
+}
+.post__user-avatar {
+    width:30px;
+    height:30px;
+    border-radius:15px;
+    margin-right:5px;
+}
+.post__user-name{
+    font-size:18px;
+}
+.post__time {
+    font-size:12px;
+    color: gray;
+    padding-left:20px;
+}
+.post__content {
+    margin-top:15px;
+    margin-bottom:10px;
+   
+}
+.post__image {
+    max-height:300px;
+}
+
 /*--------------------------Footer----------------------------------------*/
 .footer {
     background-color: var(--main-color);

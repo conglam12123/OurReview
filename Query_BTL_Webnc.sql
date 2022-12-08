@@ -140,13 +140,14 @@ end
 go
 exec sp_UploadPost 1,1,N'Tôi cảm thấy rất hài lòng với chất lượng sản phẩm',N'./Assets/img/avatar/07122022_101227_AM_tommy xiaomi.jpg'
 -- tạo proc lấy post để hiển thị 
+drop proc sp_getPostByCategoryID
 create proc sp_getPostByCategoryID 
 (
 	@idCate int
 )
 as
 begin
-	select  a.PK_iPostID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
+	select  a.PK_iPostID,sUserName,sUserAvatar,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
 	from tblPost a 
 		inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
 		inner join (select PK_iPostID, COUNT(PK_iPostID) as [likecount]

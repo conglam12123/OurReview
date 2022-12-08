@@ -5,7 +5,7 @@ use db_webnc
 create table tblUsers
 (
 	PK_iUserID int IDENTITY(1,1),
-	sUserEmail nvarchar(255),
+	sUserEmail nvarchar(255) UNIQUE,
 	sUserPassword nvarchar(255),
 	sUserName nvarchar(255),
 	sUserAvatar nvarchar(255),
@@ -28,19 +28,20 @@ create table tblPost
 	sPostContent nvarchar(255),
 	dPostedDatetime datetime,
 	iPostLikedCount int,
+	sPostImageUrl nvarchar(255),
 	primary key (PK_iPostID),
 	constraint fk_post_user foreign key (FK_iUserID) references tblUsers(PK_iUserID),
 	constraint fk_post_category foreign key (FK_iCategoryID) references tblCategories(PK_iCategoryID)
 )
 go
-create table tblPostImage
-(
-	PK_iImageID int IDENTITY(1,1),
-	FK_iPostID int,
-	sPostImage nvarchar(255),
-	primary key (PK_iImageID),
-	constraint fk_image_post Foreign key (FK_iPostID) references tblPost (PK_iPostID)
-)
+--create table tblPostImage
+--(
+--	PK_iImageID int IDENTITY(1,1),
+--	FK_iPostID int,
+--	sPostImage nvarchar(255),
+--	primary key (PK_iImageID),
+--	constraint fk_image_post Foreign key (FK_iPostID) references tblPost (PK_iPostID)
+--)
 go
 create table tblComment
 (
@@ -55,6 +56,7 @@ create table tblComment
 	constraint fk_comment_user foreign key (FK_iUserID) references tblUsers (PK_iUserID)
 )
 go 
+--drop table tblLikedPost
 create table tblLikedPost
 (
 	PK_iLikedPostID int IDENTITY(1,1),
@@ -62,7 +64,8 @@ create table tblLikedPost
 	FK_iPostID int,
 	primary key (PK_iLikedPostID),
 	constraint fk_liked_post foreign key (FK_iPostID) references tblPost (PK_iPostID),
-	constraint fk_user_liked_post foreign key (FK_iUserID) references tblUsers (PK_iUserID)
+	constraint fk_user_liked_post foreign key (FK_iUserID) references tblUsers (PK_iUserID),
+	constraint uq_likedpost unique (FK_iUserID,FK_iPostID)
 )
 go
 create table tblLikedComment
@@ -72,11 +75,12 @@ create table tblLikedComment
 	FK_iCommentID int,
 	primary key (PK_iLikedCommentID),
 	constraint fk_liked_comment foreign key (FK_iCommentID) references tblComment (PK_iCommentID),
-	constraint fk_user_liked_comment foreign key (FK_iUserID) references tblUsers (PK_iUserID)
+	constraint fk_user_liked_comment foreign key (FK_iUserID) references tblUsers (PK_iUserID),
+	constraint uq_likedcomment unique (FK_iUserID,FK_iCommentID)
 )
 -- tạo các stored procedure
 -- đăng ký người dùng
-use db_webnc
+go
 create proc sp_InsertUser
 (
 	@email nvarchar(255),
@@ -89,11 +93,12 @@ begin
 	insert into tblUsers (sUserEmail, sUserPassword, sUserName, sUserAvatar)
 	values (@email,@password,@username,@avatar)
 end
-select * from tblUsers
-delete from tblUsers where PK_iUserID>1
+--select * from tblUsers
+--delete from tblUsers where PK_iUserID>1
 
 -- sp login
-drop proc sp_login
+--drop proc sp_login
+go
 create proc sp_login
 (
 	@email nvarchar(255),
@@ -104,6 +109,104 @@ begin
 	select * from tblUsers 
 	where (sUserEmail = @email) and sUserPassword = @password
 end
+go
+exec sp_login 'nguyenconglam7@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'
+go
+insert into tblCategories (sCategoryName,sCategoryImage)
+values (N'Thời trang','./Assets/img/category/fashion.png'),
+	(N'Công nghệ','./Assets/img/category/technology.png'),
+	(N'Du lịch','./Assets/img/category/travel.png')
+-- tạo proc lấy tên thư mục
+go
+create proc sp_getCategories 
+as
+begin
+	select * from tblCategories
+end
+-- tạo proc đăng post
+drop proc sp_UploadPost
+create proc sp_UploadPost
+(
+	@userid int,
+	@cateid int,
+	@postcontent nvarchar(255),
+	@postImageUrl nvarchar(255)
+)
+as
+begin 
+	INSERT into tblPost (FK_iUserID,FK_iCategoryID,sPostContent,dPostedDatetime,sPostImageUrl)
+	values(@userid,@cateid,@postcontent,getdate(),@postImageUrl)
+end
+go
+exec sp_UploadPost 1,1,N'Tôi cảm thấy rất hài lòng với chất lượng sản phẩm',N'./Assets/img/avatar/07122022_101227_AM_tommy xiaomi.jpg'
+-- tạo proc lấy post để hiển thị 
+create proc sp_getPostByCategoryID 
+(
+	@idCate int
+)
+as
+begin
+	select  a.PK_iPostID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
+	from tblPost a 
+		inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
+		inner join (select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+			from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
+			group by PK_iPostID) c on a.PK_iPostID = c.PK_iPostID
+		inner join (select PK_iPostID, COUNT(PK_iCommentID) as [commentcount]
+			from tblPost a left join tblComment b on a.PK_iPostID = b.FK_iPostID
+			group by PK_iPostID) d on a.PK_iPostID = d.PK_iPostID
+	where FK_iCategoryID = @idCate
+end
+go
+exec sp_getPostByCategoryID 1;
+
+
+
+
+
+--truy vấn lấy toàn bộ thông tin của post cần hiển thị
+select  a.PK_iPostID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
+from tblPost a 
+	inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
+	inner join (select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+		from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
+		group by PK_iPostID) c on a.PK_iPostID = c.PK_iPostID
+	inner join (select PK_iPostID, COUNT(PK_iCommentID) as [commentcount]
+		from tblPost a left join tblComment b on a.PK_iPostID = b.FK_iPostID
+		group by PK_iPostID) d on a.PK_iPostID = d.PK_iPostID
+-- bảng đếm like
+go
+select PK_iPostID, COUNT(PK_iPostID) as [likecount]
+from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
+group by PK_iPostID
+--bảng đếm comment
+go
+select PK_iPostID, COUNT(PK_iCommentID) as [commentcount]
+from tblPost a left join tblComment b on a.PK_iPostID = b.FK_iPostID
+group by PK_iPostID
+
+
+insert into tblLikedPost(FK_iUserID,FK_iPostID)
+values(5,1),(6,1)
+select * from tblLikedPost
+
+
+delete from tblLikedPost where 1=1
+select * from tblPost
+
+
+
+
+select * from tblPost;
+
+exec sp_getCategories
 
 exec sp_login 'nguyenconglam7@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'
 select * from tblUsers
+delete from tblUsers 
+where PK_iUserID>1
+
+select * from tblUsers
+select * from tblPost
+
+

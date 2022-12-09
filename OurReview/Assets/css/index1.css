@@ -321,6 +321,27 @@
 .post__image {
     max-height:300px;
 }
+.post__action {
+    display:block;
+    border-top: solid 1px #e0e0e0;
+    height:25px;
+}
+.post__action-btn{
+    border:none;
+    height:25px;
+    padding: 3px 5px;
+}
+.post__action-btn:hover {
+    cursor:pointer;
+    color:var(--main-color);
+}
+.post__action-option {
+
+}
+.post__action-list{
+    width:fit-content;
+    height:fit-content;
+}
 
 /*--------------------------Footer----------------------------------------*/
 .footer {

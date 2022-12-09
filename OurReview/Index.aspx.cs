@@ -11,10 +11,28 @@ using System.Web.UI.WebControls;
 
 namespace OurReview
 {
-    public partial class Index1 : System.Web.UI.Page
+    public partial class Index1 : System.Web.UI.Page, ICallbackEventHandler
     {
+        
+        public const string DELETE_COMMAND_NAME = "delete";
+        public const string LIKE_COMMAND_NAME = "like";
+
+        public string deletedPostID;
+
+        private string m_callbackRef;
+        private string m_callbackResult;
+
+        public string CallbackRef { get => m_callbackRef; set => m_callbackRef = value; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            m_callbackRef = Page.ClientScript.GetCallbackEventReference(
+                    this,
+                    "args",
+                    "callbackCompleted",
+                    "context",
+                    true
+                );
             if (!IsPostBack)
             {
                 DataTable categoriesTable = GetCategories();
@@ -105,6 +123,7 @@ namespace OurReview
                 if (UploadPost(fileName) != 0)
                 {
                     Response.Write("<script>alert('Đăng bài viết thành công! nội dung trang web sẽ sớm được cập nhật!');</script>");
+                    updateContent();
                 }
                 else
                 {
@@ -147,6 +166,72 @@ namespace OurReview
                 return true;
             }
             else return false;
+        }
+
+        protected void rptPostsOfCategories_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            // Chỉ hiện tùy chọn sửa/xóa với chủ bài viết 
+            int idPost = Convert.ToInt32((e.Item.FindControl("hfPosterID") as HiddenField).Value);
+            if (Session["user_id"] == "" || idPost != Convert.ToInt32(Session["user_id"]))
+            {
+                Label lbAlternate = e.Item.FindControl("lbAlternate") as Label;
+                lbAlternate.Visible = false;
+            }
+            Panel pnPost = e.Item.FindControl("pnPost") as Panel;
+        }
+
+        protected void btnLike_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void RaiseCallbackEvent(string args)
+        {
+            string[] a = args.Split(':');
+            switch (a[0])
+            {
+                case DELETE_COMMAND_NAME:
+                    m_callbackResult = DeletePost(Convert.ToInt32(a[1])).ToString();
+                    ; break;
+            }
+
+        }
+
+        private int DeletePost(int postID)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_deletePost";
+                    cmd.Parameters.AddWithValue("@postid",postID);
+                    cmd.Parameters.AddWithValue("@userid",Convert.ToInt32(Session["user_id"]));
+                    cnn.Open();
+                    try
+                    {
+                        return cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        return 0;
+                    }
+                    cnn.Close();
+                }
+            }
+        }
+
+        public string GetCallbackResult()
+        {
+            return m_callbackResult;
+        }
+        
+        public void updateContent()
+        {
+            DataTable categoriesTable = GetCategories();
+            rptPostsByCategories.DataSource = categoriesTable;
+            rptPostsByCategories.DataBind();
         }
     }
 }

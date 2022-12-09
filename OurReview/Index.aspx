@@ -1,6 +1,36 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Masterpage.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="OurReview.Index1" %>
+﻿<%@ Page Title="OurReview" Language="C#" MasterPageFile="~/Masterpage.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="OurReview.Index1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script>  
+        var DeletePost = function (id) {
+            confirm('Bạn có chắc là muốn xóa bài viết này không ?');
+            let args = '<%=DELETE_COMMAND_NAME%>'+":" + id;
+            let context = id;
+            <%=CallbackRef%>
+        }
+        var LikePost = function () {
+
+        }
+
+        var callbackCompleted = function (data, context) {
+            alert("context=" + context + " Data =" + data);
+            if (data == 0) {
+                alert('Xóa thất bại');
+            } else {
+                alert('Xóa bài viết thành công');
+                var listOfPost = [];
+                listOfPost = document.getElementsByClassName("post");
+                for (e of listOfPost) {
+                    if (e.firstElementChild.value == context) {
+                        e.remove()
+                    }
+
+                }
+            }
+        }
+
+    </script>
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="content ">
         <div class="wrapper grid">
@@ -32,9 +62,9 @@
                             <span>Nhập nội dung bài viết:</span>
                             <asp:TextBox ID="tbPostContent" runat="server" CssClass="upload__content"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="vPostContentUpload" runat="server" 
-                                ControlToValidate="tbPostContent" Display="Dynamic" ErrorMessage="Bạn cần nhập nội dung bài viết" 
-                                ValidationGroup="upload" ForeColor="Red">
-
+                                ControlToValidate="tbPostContent" Display="Dynamic" 
+                                ErrorMessage="Bạn cần nhập nội dung bài viết" 
+                                ValidationGroup="upload-post" ForeColor="Red">
                             </asp:RequiredFieldValidator>
                         </div>
                         <div class="upload__picture">
@@ -42,7 +72,7 @@
                             <asp:FileUpload runat="server" ID="fuPostImage"  />
                         </div>
                         <div class="upload__buttons">
-                            <asp:Button ID="btnUpload" runat="server" text="Đăng bài viết" OnClick="btnUpload_Click" ValidationGroup="upload"/>
+                            <asp:Button ID="btnUpload" runat="server" text="Đăng bài viết" OnClick="btnUpload_Click" ValidationGroup="upload-post"/>
                             <asp:Button ID="btnCancelUpload" runat="server" Text="Hủy" OnClick="btnCancelUpload_Click"/>
                         </div>
                     </div>
@@ -54,10 +84,12 @@
                             <div class="post__view-category">
                                 <a class="post__view-category-header"  href="Category.aspx?id=<%#Eval("PK_iCategoryID") %>"><%#Eval("sCategoryName") %></a>
                             </div>
-                            <asp:HiddenField ID="hfCategoryID" runat="server" Value='<%#Eval("PK_iCategoryID") %>'/>
-                            <asp:Repeater runat="server" ID="rptPostsOfCategories">
+                            <asp:HiddenField ID="hfCategoryID" runat="server" Value='<%#Eval("PK_iCategoryID") %>' />
+                            <asp:Repeater runat="server" ID="rptPostsOfCategories" OnItemDataBound="rptPostsOfCategories_ItemDataBound" >
                                 <ItemTemplate>
-                                    <div class="post">
+                                    <asp:Panel runat="server" ID="pnPost" CssClass="post" ClientIDMode="Predictable" >
+                                        <asp:HiddenField runat="server" ID="hfPostID" Value='<%#Eval("PK_iPostID") %>'/>
+                                        <asp:HiddenField runat="server"  ID="hfPosterID" Value='<%#Eval("FK_iUserID") %>'/>
                                         <div class="post__user">
                                             <a class="post__user-link" href="" >
                                                 <img Class="post__user-avatar" src="<%#Eval("sUserAvatar") %>" />
@@ -70,10 +102,14 @@
                                         <p class="post__content"><%#Eval("sPostContent") %></p>
                                         <img class="post__image" src="<%#Eval("sPostImageUrl") %>"/>
                                         <div class="post__action">
-                                            <button class="post__action-like"><i class="fa-solid fa-thumbs-up"></i> Thích (<%#Eval("likecount") %>)</button>
-                                            <button claa="post__action-comment"><i class="fa-solid fa-comment"></i>Bình luận (<%#Eval("commentcount") %>)</button>
+                                            <a  class="post__action-btn" ><i class="fa-solid fa-thumbs-up"></i> Thích (<%#Eval("likecount") %>)</asp:Button>
+                                            <a  class="post__action-btn"><i class="fa-solid fa-comment"></i>Bình luận (<%#Eval("commentcount") %>)</a>
+                                            <asp:Label runat="server" ID="lbAlternate" CssClass="post__action-option ">
+                                                    <a  class="post__action-btn" href="javascript:DeletePost(<%#Eval("PK_iPostID")%>)">Xóa</a>
+                                                    <a  class="post__action-btn" href="javascript:">Chỉnh sửa</a>
+                                            </asp:Label>
                                         </div>
-                                    </div>
+                                    </asp:Panel>
                                 </ItemTemplate>
                             </asp:Repeater>
                         </ItemTemplate>

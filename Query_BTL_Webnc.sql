@@ -63,8 +63,8 @@ create table tblLikedPost
 	FK_iUserID int,
 	FK_iPostID int,
 	primary key (PK_iLikedPostID),
-	constraint fk_liked_post foreign key (FK_iPostID) references tblPost (PK_iPostID),
-	constraint fk_user_liked_post foreign key (FK_iUserID) references tblUsers (PK_iUserID),
+	constraint fk_liked_post foreign key (FK_iPostID) references tblPost (PK_iPostID) ON DELETE CASCADE,
+	constraint fk_user_liked_post foreign key (FK_iUserID) references tblUsers (PK_iUserID) ON DELETE CASCADE,
 	constraint uq_likedpost unique (FK_iUserID,FK_iPostID)
 )
 go
@@ -74,8 +74,8 @@ create table tblLikedComment
 	FK_iUserID int,
 	FK_iCommentID int,
 	primary key (PK_iLikedCommentID),
-	constraint fk_liked_comment foreign key (FK_iCommentID) references tblComment (PK_iCommentID),
-	constraint fk_user_liked_comment foreign key (FK_iUserID) references tblUsers (PK_iUserID),
+	constraint fk_liked_comment foreign key (FK_iCommentID) references tblComment (PK_iCommentID) ON DELETE CASCADE,
+	constraint fk_user_liked_comment foreign key (FK_iUserID) references tblUsers (PK_iUserID) ON DELETE CASCADE,
 	constraint uq_likedcomment unique (FK_iUserID,FK_iCommentID)
 )
 -- tạo các stored procedure
@@ -147,7 +147,7 @@ create proc sp_getPostByCategoryID
 )
 as
 begin
-	select  a.PK_iPostID,sUserName,sUserAvatar,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
+	select  a.PK_iPostID,a.FK_iUserID,sUserName,sUserAvatar,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
 	from tblPost a 
 		inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
 		inner join (select PK_iPostID, COUNT(FK_iPostID) as [likecount]
@@ -161,12 +161,24 @@ end
 go
 exec sp_getPostByCategoryID 1;
 
-
+-- Taoj proc xóa bài viết 
+drop proc sp_deletePost
+create proc sp_deletePost
+(
+	@postid int,
+	@userid int
+)
+as
+begin 
+	delete from tblPost
+	where PK_iPostID = @postid;
+end
+select* from tblPost
 
 
 
 --truy vấn lấy toàn bộ thông tin của post cần hiển thị
-select  a.PK_iPostID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
+select  a.PK_iPostID,a.FK_iUserID,sUserName,dPostedDatetime,sPostContent,sPostImageUrl,likecount,commentcount
 from tblPost a 
 	inner join tblUsers b on a.FK_iUserID = b.PK_iUserID
 	inner join (select PK_iPostID, COUNT(FK_iPostID) as [likecount]

@@ -52,8 +52,8 @@ create table tblComment
 	dCommentDateTime datetime,
 	iCommentLikedCount int,
 	primary key (PK_iCommentID),
-	constraint fk_comment_post foreign key (FK_iPostID) references tblPost (PK_iPostID),
-	constraint fk_comment_user foreign key (FK_iUserID) references tblUsers (PK_iUserID)
+	constraint fk_comment_post foreign key (FK_iPostID) references tblPost (PK_iPostID) ON DELETE CASCADE,
+	constraint fk_comment_user foreign key (FK_iUserID) references tblUsers (PK_iUserID) ON DELETE CASCADE
 )
 go 
 --drop table tblLikedPost
@@ -74,7 +74,7 @@ create table tblLikedComment
 	FK_iUserID int,
 	FK_iCommentID int,
 	primary key (PK_iLikedCommentID),
-	constraint fk_liked_comment foreign key (FK_iCommentID) references tblComment (PK_iCommentID) ON DELETE CASCADE,
+	constraint fk_liked_comment foreign key (FK_iCommentID) references tblComment (PK_iCommentID),
 	constraint fk_user_liked_comment foreign key (FK_iUserID) references tblUsers (PK_iUserID) ON DELETE CASCADE,
 	constraint uq_likedcomment unique (FK_iUserID,FK_iCommentID)
 )

@@ -173,7 +173,61 @@ begin
 	delete from tblPost
 	where PK_iPostID = @postid;
 end
-select* from tblPost
+--TẠo proc thêm lượt like
+create proc sp_LikePost
+(
+	@postid int,
+	@userid int
+	)
+as
+begin
+	insert into tblLikedPost(FK_iPostID,FK_iUserID)
+	values(@postid,@userid)
+end
+--tạo proc xóa lượt like 
+go
+create proc sp_UnlikePost 
+(
+	@postid int,
+	@userid int
+)
+as
+begin
+	delete from tblLikedPost
+	where FK_iPostID = @postid and FK_iUserID = @userid
+end
+exec sp_UnlikePost 4,1
+delete from tblLikedPost where 1=1
+select * from tblLikedPost
+--- lấy số like hiện tại của post
+create proc sp_getPostLike
+(
+	@postid int
+)
+as
+begin
+	select PK_iPostID, COUNT(b.FK_iPostID) as [likecount]
+	from tblPost a left join tblLikedPost b on a.PK_iPostID = b.FK_iPostID
+	where PK_iPostID = @postid
+	group by PK_iPostID
+end 
+exec sp_getPostLike 4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

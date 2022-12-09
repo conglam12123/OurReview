@@ -1,34 +1,6 @@
 ﻿<%@ Page Title="OurReview" Language="C#" MasterPageFile="~/Masterpage.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="OurReview.Index1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script>  
-        var DeletePost = function (id) {
-            confirm('Bạn có chắc là muốn xóa bài viết này không ?');
-            let args = '<%=DELETE_COMMAND_NAME%>'+":" + id;
-            let context = id;
-            <%=CallbackRef%>
-        }
-        var LikePost = function () {
 
-        }
-
-        var callbackCompleted = function (data, context) {
-            alert("context=" + context + " Data =" + data);
-            if (data == 0) {
-                alert('Xóa thất bại');
-            } else {
-                alert('Xóa bài viết thành công');
-                var listOfPost = [];
-                listOfPost = document.getElementsByClassName("post");
-                for (e of listOfPost) {
-                    if (e.firstElementChild.value == context) {
-                        e.remove()
-                    }
-
-                }
-            }
-        }
-
-    </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -102,8 +74,12 @@
                                         <p class="post__content"><%#Eval("sPostContent") %></p>
                                         <img class="post__image" src="<%#Eval("sPostImageUrl") %>"/>
                                         <div class="post__action">
-                                            <a  class="post__action-btn" ><i class="fa-solid fa-thumbs-up"></i> Thích (<%#Eval("likecount") %>)</asp:Button>
-                                            <a  class="post__action-btn"><i class="fa-solid fa-comment"></i>Bình luận (<%#Eval("commentcount") %>)</a>
+                                            <a class="post__action-btn" href="javascript:LikePost(<%#Eval("PK_iPostID") %>)" >
+                                                <i class="fa-solid fa-thumbs-up"></i>
+                                                <span>Thích </span>
+                                                <span class="post__like-count">(<%#Eval("likecount") %>)</span>
+                                            </a>
+                                            <a class="post__action-btn"><i class="fa-solid fa-comment"></i>Bình luận <span class="post__comment-count">(<%#Eval("commentcount") %>)</span> </a>
                                             <asp:Label runat="server" ID="lbAlternate" CssClass="post__action-option ">
                                                     <a  class="post__action-btn" href="javascript:DeletePost(<%#Eval("PK_iPostID")%>)">Xóa</a>
                                                     <a  class="post__action-btn" href="javascript:">Chỉnh sửa</a>
@@ -118,4 +94,78 @@
             </div><%--Content__main--%>
         </div>
     </div>
+    <script>
+        var DeletePost = function (id) {
+            confirm('Bạn có chắc là muốn xóa bài viết này không ?');
+            let args = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
+            let context = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
+            <%=CallbackRef %>
+        };
+        var callbackCompleted = function (data, context) {
+            var result = [];
+            result = context.split(':');
+            alert('context = '+ context + ' Daata= '+ data + ' result= '+ result);
+            switch(result[0]) {
+                case '<%=DELETE_COMMAND_NAME%>': deleteResult(result[1], data) ;break;
+                case '<%=UNLIKE_COMMAND_NAME%>': unlikeResult(result[1],data) ;break;
+                case '<%=LIKE_COMMAND_NAME%>': likeResult(result[1], data);break;
+
+            }
+
+        }
+
+        var deleteResult = function (data, context) {
+            alert("context=" + context + " Data =" + data);
+            if (data == 0) {
+                alert('Xóa thất bại');
+            } else {
+                alert('Xóa bài viết thành công');
+                var listOfPost = [];
+                listOfPost = document.getElementsByClassName("post");
+                for (e of listOfPost) {
+                    if (e.firstElementChild.value == context) {
+                        e.remove();
+                    }
+                }
+            }
+        }
+
+        var LikePost = function (id) {
+            let args = '';
+            let context = '';
+            listOfPost = document.getElementsByClassName("post");
+            for (e of listOfPost) {
+                if (e.firstElementChild.value == id) {
+                    if (e.children[5].children[0].classList.contains("liked")) {
+                        args = '<%=UNLIKE_COMMAND_NAME%>' + ":" + id;
+                        context = '<%=UNLIKE_COMMAND_NAME%>' + ":" + id;
+                    }
+                    else if (!e.children[5].children[0].classList.contains("liked")) {
+                        args = '<%=LIKE_COMMAND_NAME%>' + ":" + id;
+                        context = '<%=LIKE_COMMAND_NAME%>' + ":" + id;
+                    }
+                }
+             }
+            <%=CallbackRef %>
+        }
+        var unlikeResult = function (context, data) {
+            listOfPost = document.getElementsByClassName("post");
+            for (e of listOfPost) {
+                if (e.firstElementChild.value == context) {
+                    e.children[5].children[0].classList.remove("liked");
+                    e.children[5].children[0].children[2].innerText = '('+ data +')' ;
+                }
+            }
+        }
+        var likeResult = function (context, data) {
+            listOfPost = document.getElementsByClassName("post");
+            for (e of listOfPost) {
+                if (e.firstElementChild.value == context) {
+                    e.children[5].children[0].classList.add("liked");
+                    e.children[5].children[0].children[2].innerText = '(' + data + ')';
+                }
+            }
+        }
+        
+    </script>
 </asp:Content>

@@ -3,7 +3,7 @@
     let args = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
     let context = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
             <%=CallbackRef %>
-        }
+};
 
 var LikePost = function (id) {
     let args = '';
@@ -20,10 +20,10 @@ var LikePost = function (id) {
             }
         }
     }
-
     let context = '<%=LIKE_COMMAND_NAME%>' + ":" + id;
-            <%=CallbackRef %> --%>
- }
+    console.log(context, args)
+        <% -- <%=CallbackRef %> --%> --%>
+        };
 
 var callbackCompleted = function (data, context) {
     alert("context=" + context + " Data =" + data);

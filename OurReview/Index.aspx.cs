@@ -16,6 +16,7 @@ namespace OurReview
         
         public const string DELETE_COMMAND_NAME = "delete";
         public const string LIKE_COMMAND_NAME = "like";
+        public const string UNLIKE_COMMAND_NAME = "unlike";
 
         public string deletedPostID;
 
@@ -180,10 +181,6 @@ namespace OurReview
             Panel pnPost = e.Item.FindControl("pnPost") as Panel;
         }
 
-        protected void btnLike_Click(object sender, EventArgs e)
-        {
-
-        }
 
         public void RaiseCallbackEvent(string args)
         {
@@ -193,8 +190,91 @@ namespace OurReview
                 case DELETE_COMMAND_NAME:
                     m_callbackResult = DeletePost(Convert.ToInt32(a[1])).ToString();
                     ; break;
+                case LIKE_COMMAND_NAME:
+                    LikePost(Convert.ToInt32(a[1])) ;
+                    m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    break;
+                case UNLIKE_COMMAND_NAME:
+                    UnlikePost(Convert.ToInt32(a[1]));
+                    m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    break;
             }
 
+        }
+        private int GetLike (int postID)
+        {
+            int result = 0 ;
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_getPostLike";
+                    cmd.Parameters.AddWithValue("@postid", postID);
+                    cnn.Open();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            result = rd.GetInt32(1);
+                        }
+                    }
+                    return result;
+                    cnn.Close();
+                }
+            }
+            
+        }
+        private int UnlikePost(int postID)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_UnlikePost";
+                    cmd.Parameters.AddWithValue("@postid", postID);
+                    cmd.Parameters.AddWithValue("@userid", Convert.ToInt32(Session["user_id"]));
+                    cnn.Open();
+                    try
+                    {
+                        return cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        return 0;
+                    }
+                    cnn.Close();
+                }
+            }
+        }
+
+        private int LikePost(int postID)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_LikePost";
+                    cmd.Parameters.AddWithValue("@postid", postID);
+                    cmd.Parameters.AddWithValue("@userid", Convert.ToInt32(Session["user_id"]));
+                    cnn.Open();
+                    try
+                    {
+                        return cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        return 0;
+                    }
+                    cnn.Close();
+                }
+            }
         }
 
         private int DeletePost(int postID)

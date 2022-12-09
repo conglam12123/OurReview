@@ -73,6 +73,7 @@
     <Content Include="Assets\img\avatar\DefaultAvatar.png" />
     <Content Include="Assets\img\Logo.png" />
     <Content Include="Assets\img\small_logo.png" />
+    <Content Include="Assets\js\Main.js" />
     <Content Include="Assets\js\master.js" />
     <Content Include="Category.aspx" />
     <Content Include="Global.asax" />

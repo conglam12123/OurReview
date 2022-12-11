@@ -228,7 +228,19 @@ end
 
 exec sp_checkIfLiked 
 
+------ Lấy danh sách id các bài viết mà người dùng đã like
+create proc sp_getLikedList
+@userid int
+as
+begin
+	select FK_iPostID 
+	from tblLikedPost 
+	where FK_iUserID = @userid
+end
+select * from tblUsers
+exec sp_getLikedList 1
 
+	
 
 
 
@@ -265,7 +277,7 @@ group by PK_iPostID
 
 
 insert into tblLikedPost(FK_iUserID,FK_iPostID)
-values(5,1),(6,1)
+values(1,40),(1,5)
 select * from tblLikedPost
 
 

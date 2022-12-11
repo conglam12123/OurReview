@@ -49,8 +49,16 @@
                     </a>
                     <ul class="header__user-option">
                         <li class="user__option-item">
+                                <asp:Button CssClass="option__item-btn" runat="server" ID="linkProfile" Text="Trang cá nhân" OnClick="linkProfile_Click" />
+                            </li>
+
+                        <li class="user__option-item">
                             <asp:Button CssClass="option__item-btn" runat="server" ID="btnUpdateProfile" Text="Sửa thông tin tài khoản" OnClick="btnUpdateProfile_Click" />
                         </li>
+                        <li class="user__option-item">
+                                <asp:Button CssClass="option__item-btn" runat="server" ID="btnChangePass" Text="Đổi mật khẩu" OnClick="btnChangePass_Click" />
+                         </li>
+
                         <li class="user__option-item">
                             <asp:Button CssClass="option__item-btn" runat="server" ID="btnLogout" Text="Đăng xuất" OnClick="btnLogout_Click" />
 

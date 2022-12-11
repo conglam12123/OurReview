@@ -63,10 +63,10 @@
                                         <asp:HiddenField runat="server" ID="hfPostID" Value='<%#Eval("PK_iPostID") %>'/>
                                         <asp:HiddenField runat="server"  ID="hfPosterID" Value='<%#Eval("FK_iUserID") %>'/>
                                         <div class="post__user">
-                                            <a class="post__user-link" href="" >
+                                            <a class="post__user-link" href="ProfileUser.aspx?ProfileID1=<%#Eval("FK_iUserID") %>" >
                                                 <img Class="post__user-avatar" src="<%#Eval("sUserAvatar") %>" />
                                             </a>
-                                            <a class="post__user-link" href="" >
+                                            <a class="post__user-link" href="ProfileUser.aspx?ProfileID1=<%#Eval("FK_iUserID") %>" >
                                                 <span Class="post__user-name"><%#Eval("sUserName") %></span>
                                             </a>
                                             <span class="post__time"><%#Eval("dPostedDateTime") %></span>
@@ -95,25 +95,28 @@
         </div>
     </div>
     <script>
+
+        var callbackCompleted = function (data, context) {
+            var result = [];
+            result = context.split(':');
+            console.log('Data: ' + data + ' context= ' + context);
+            switch (result[0]) {
+                case '<%=DELETE_COMMAND_NAME%>': deleteResult(result[1], data); break;
+                case '<%=UNLIKE_COMMAND_NAME%>': unlikeResult(result[1],data) ;break;
+                case '<%=LIKE_COMMAND_NAME%>': likeResult(result[1], data); break;
+                case '<%=GETLIKE_COMMAND_NAME%>': likeStatusResult(data); break;
+            }
+
+        }
+
         var DeletePost = function (id) {
             confirm('Bạn có chắc là muốn xóa bài viết này không ?');
             let args = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
             let context = '<%=DELETE_COMMAND_NAME%>' + ":" + id;
             <%=CallbackRef %>
         };
-        var callbackCompleted = function (data, context) {
-            var result = [];
-            result = context.split(':');
-            switch(result[0]) {
-                case '<%=DELETE_COMMAND_NAME%>': deleteResult(result[1], data) ;break;
-                case '<%=UNLIKE_COMMAND_NAME%>': unlikeResult(result[1],data) ;break;
-                case '<%=LIKE_COMMAND_NAME%>': likeResult(result[1], data);break;
 
-            }
-
-        }
-
-        var deleteResult = function (data, context) {
+        var deleteResult = function (context, data) {
             if (data == 0) {
                 alert('Xóa thất bại');
             } else {
@@ -167,13 +170,29 @@
                     }
                 }
             }
-            
+        }
+</script>
+    <script>
+        var getLikeStatus = function () {
+            let args = '<%=GETLIKE_COMMAND_NAME%>';
+            let context = '<%=GETLIKE_COMMAND_NAME%>';
+            <%=CallbackRef %>;
         }
 
-        var getLikeStatus = function (id) {
-            console.log(id);
+        var likeStatusResult = function  (data) {
+            let arr = data.split(':');
+            let postlist = [];
+            postlist = document.getElementsByClassName("post");
+            if (postlist[0] != undefined) {
+                for (e of postlist) {
+                    for (x of arr) {
+                        if (e.firstElementChild.value == x) {
+                            e.children[5].children[0].classList.add("liked");
+                        }
+                    }
+                }
+            }
         }
-
-        
+        window.onload = getLikeStatus;
     </script>
 </asp:Content>

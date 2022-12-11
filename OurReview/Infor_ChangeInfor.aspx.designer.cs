@@ -11,97 +11,115 @@ namespace OurReview
 {
 
 
-    public partial class Index
+    public partial class WebForm3
     {
 
         /// <summary>
-        /// form1 control.
+        /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
-        /// tbSearch control.
+        /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbSearch;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
-        /// lbxSearchOption control.
+        /// rptInforGr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList lbxSearchOption;
+        protected global::System.Web.UI.WebControls.Repeater rptInforGr;
 
         /// <summary>
-        /// liUser control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListItem liUser;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// liPost control.
+        /// changeNameGr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListItem liPost;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl changeNameGr;
 
         /// <summary>
-        /// imgAvatar control.
+        /// txtName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgAvatar;
+        protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
-        /// rptCategories control.
+        /// btnCancelUpdateName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptCategories;
+        protected global::System.Web.UI.WebControls.Button btnCancelUpdateName;
 
         /// <summary>
-        /// drlCategories control.
+        /// btnUpdateName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drlCategories;
+        protected global::System.Web.UI.WebControls.Button btnUpdateName;
 
         /// <summary>
-        /// tbPostContent control.
+        /// changeAvatarGr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPostContent;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl changeAvatarGr;
 
         /// <summary>
-        /// fuPostImage control.
+        /// fulAvatar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuPostImage;
+        protected global::System.Web.UI.WebControls.FileUpload fulAvatar;
+
+        /// <summary>
+        /// btnCancelUpdateAva control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelUpdateAva;
+
+        /// <summary>
+        /// btnUpdateAva control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUpdateAva;
     }
 }

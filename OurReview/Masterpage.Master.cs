@@ -46,7 +46,15 @@ namespace OurReview
 
         protected void btnUpdateProfile_Click(object sender, EventArgs e)
         {
-            Response.Redirect(ConfigurationManager.AppSettings["changeprofileurl"]);
+            Response.Redirect(ConfigurationManager.AppSettings["changeinforurl"]);
+        }
+        protected void btnChangePass_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(ConfigurationManager.AppSettings["changepassurl"]);
+        }
+        protected void linkProfile_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(ConfigurationManager.AppSettings["profileuserurl"]);
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)

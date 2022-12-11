@@ -76,10 +76,14 @@
     <Content Include="Assets\js\Main.js" />
     <Content Include="Assets\js\master.js" />
     <Content Include="Category.aspx" />
+    <Content Include="ChangePass.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Index.aspx" />
-    <Content Include="IndexOld.aspx" />
+    <Content Include="Infor_ChangeInfor.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="ProfileUser.aspx" />
+    <Content Include="SearchPost.aspx" />
+    <Content Include="SearchUser.aspx" />
     <Content Include="Web.config" />
     <Content Include="Register.aspx" />
   </ItemGroup>
@@ -91,6 +95,13 @@
     <Compile Include="Category.aspx.designer.cs">
       <DependentUpon>Category.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ChangePass.aspx.cs">
+      <DependentUpon>ChangePass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePass.aspx.designer.cs">
+      <DependentUpon>ChangePass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -101,12 +112,12 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
-    <Compile Include="IndexOld.aspx.cs">
-      <DependentUpon>IndexOld.aspx</DependentUpon>
+    <Compile Include="Infor_ChangeInfor.aspx.cs">
+      <DependentUpon>Infor_ChangeInfor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="IndexOld.aspx.designer.cs">
-      <DependentUpon>IndexOld.aspx</DependentUpon>
+    <Compile Include="Infor_ChangeInfor.aspx.designer.cs">
+      <DependentUpon>Infor_ChangeInfor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -114,6 +125,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileUser.aspx.cs">
+      <DependentUpon>ProfileUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProfileUser.aspx.designer.cs">
+      <DependentUpon>ProfileUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.aspx.cs">
@@ -129,6 +147,20 @@
     </Compile>
     <Compile Include="Masterpage.Master.designer.cs">
       <DependentUpon>Masterpage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPost.aspx.cs">
+      <DependentUpon>SearchPost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchPost.aspx.designer.cs">
+      <DependentUpon>SearchPost.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchUser.aspx.cs">
+      <DependentUpon>SearchUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchUser.aspx.designer.cs">
+      <DependentUpon>SearchUser.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

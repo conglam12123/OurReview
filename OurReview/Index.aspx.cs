@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -17,6 +18,7 @@ namespace OurReview
         public const string DELETE_COMMAND_NAME = "delete";
         public const string LIKE_COMMAND_NAME = "like";
         public const string UNLIKE_COMMAND_NAME = "unlike";
+        public const string GETLIKE_COMMAND_NAME = "getlike";
 
         public string deletedPostID;
 
@@ -245,9 +247,45 @@ namespace OurReview
                         m_callbackResult = "-1";
                     }
                     break;
+                case GETLIKE_COMMAND_NAME:
+                    if (Session["user_id"] != "")
+                    {
+                        m_callbackResult = GetLikedPosts(Convert.ToInt32(Session["user_id"]));
+                    }
+                    else
+                    {
+                    }
+                    break;
             }
 
         }
+
+        private string GetLikedPosts( int userid)
+        {
+            string likedList = "";
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_getLikedList";
+                    cmd.Parameters.AddWithValue("@userid", userid);
+                    cnn.Open();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.HasRows)
+                    {
+                        while (rd.Read())
+                        {
+                            likedList += ":" + Convert.ToString(rd.GetInt32(0));
+                        }
+                    }
+                    cnn.Close();
+                    return likedList;
+                }
+            }
+        }
+
         private int GetLike (int postID)
         {
             int result = 0 ;
@@ -272,7 +310,6 @@ namespace OurReview
                     cnn.Close();
                 }
             }
-            
         }
         private int UnlikePost(int postID)
         {

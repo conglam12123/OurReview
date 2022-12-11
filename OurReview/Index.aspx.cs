@@ -259,7 +259,7 @@ namespace OurReview
             }
 
         }
-
+        // Lấy danh sách bài viết đã được người dùng like 
         private string GetLikedPosts( int userid)
         {
             string likedList = "";
@@ -285,7 +285,7 @@ namespace OurReview
                 }
             }
         }
-
+        // Lấy tổng số lượt like post
         private int GetLike (int postID)
         {
             int result = 0 ;

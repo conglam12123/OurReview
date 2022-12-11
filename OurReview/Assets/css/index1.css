@@ -112,15 +112,16 @@
 .header__account--anonymous > .header__user-option {
     display: none;
 }
-.header__account-link{
-    text-decoration:none;
+.header__account-link {
+    text-decoration: none;
+    text-decoration: none;
+    color: var(--text-color);
 }
-.header__account-link:visited{
-    text-decoration:none;
-    color:var(--text-color);
+.header__account-link:visited {
+    color: var(--white-color);
 }
 .header__account-link:hover{
-    color:orange;
+    color: #ffd800;
 }
 .header__account-avatar > img {
     margin: 2.5px;

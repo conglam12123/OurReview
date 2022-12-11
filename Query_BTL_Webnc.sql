@@ -200,6 +200,7 @@ exec sp_UnlikePost 4,1
 delete from tblLikedPost where 1=1
 select * from tblLikedPost
 --- lấy số like hiện tại của post
+go
 create proc sp_getPostLike
 (
 	@postid int
@@ -213,9 +214,19 @@ begin
 end 
 exec sp_getPostLike 4
 
+--Kiểm tra xem nguowifdungf đã like bài viết hay chưa
+create proc sp_checkIfLiked 
+(
+	@userid int,
+	@postid int
+)
+as
+begin
+	select * from tblLikedPost
+	where FK_iPostID=@postid and FK_iUserID = @userid
+end
 
-
-
+exec sp_checkIfLiked 
 
 
 

@@ -77,7 +77,7 @@
                                             <a class="post__action-btn" href="javascript:LikePost(<%#Eval("PK_iPostID") %>)" >
                                                 <i class="fa-solid fa-thumbs-up"></i>
                                                 <span>Thích </span>
-                                                <span class="post__like-count">(<%#Eval("likecount") %>)</span>
+                                                <span class="post__like-count" >(<%#Eval("likecount") %>)</span>
                                             </a>
                                             <a class="post__action-btn"><i class="fa-solid fa-comment"></i>Bình luận <span class="post__comment-count">(<%#Eval("commentcount") %>)</span> </a>
                                             <asp:Label runat="server" ID="lbAlternate" CssClass="post__action-option ">
@@ -104,7 +104,6 @@
         var callbackCompleted = function (data, context) {
             var result = [];
             result = context.split(':');
-            alert('context = '+ context + ' Daata= '+ data + ' result= '+ result);
             switch(result[0]) {
                 case '<%=DELETE_COMMAND_NAME%>': deleteResult(result[1], data) ;break;
                 case '<%=UNLIKE_COMMAND_NAME%>': unlikeResult(result[1],data) ;break;
@@ -115,7 +114,6 @@
         }
 
         var deleteResult = function (data, context) {
-            alert("context=" + context + " Data =" + data);
             if (data == 0) {
                 alert('Xóa thất bại');
             } else {
@@ -149,23 +147,33 @@
             <%=CallbackRef %>
         }
         var unlikeResult = function (context, data) {
-            listOfPost = document.getElementsByClassName("post");
-            for (e of listOfPost) {
-                if (e.firstElementChild.value == context) {
-                    e.children[5].children[0].classList.remove("liked");
-                    e.children[5].children[0].children[2].innerText = '('+ data +')' ;
+            if (data != -1) {
+                listOfPost = document.getElementsByClassName("post");
+                for (e of listOfPost) {
+                    if (e.firstElementChild.value == context) {
+                        e.children[5].children[0].classList.remove("liked");
+                        e.children[5].children[0].children[2].innerText = '(' + data + ')';
+                    }
                 }
             }
         }
         var likeResult = function (context, data) {
-            listOfPost = document.getElementsByClassName("post");
-            for (e of listOfPost) {
-                if (e.firstElementChild.value == context) {
-                    e.children[5].children[0].classList.add("liked");
-                    e.children[5].children[0].children[2].innerText = '(' + data + ')';
+            if (data != -1) {
+                listOfPost = document.getElementsByClassName("post");
+                for (e of listOfPost) {
+                    if (e.firstElementChild.value == context) {
+                        e.children[5].children[0].classList.add("liked");
+                        e.children[5].children[0].children[2].innerText = '(' + data + ')';
+                    }
                 }
             }
+            
         }
+
+        var getLikeStatus = function (id) {
+            console.log(id);
+        }
+
         
     </script>
 </asp:Content>

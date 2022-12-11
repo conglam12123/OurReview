@@ -48,6 +48,7 @@ namespace OurReview
                 rptPostsByCategories.DataBind();
             }
         }
+        
         private DataTable GetCategories()
         {
             String connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
@@ -179,8 +180,40 @@ namespace OurReview
                 lbAlternate.Visible = false;
             }
             Panel pnPost = e.Item.FindControl("pnPost") as Panel;
+
+            //Hiển thị like với người đã like bài viết 
+            if (Session["user_id"] != "")
+            {
+                if (checkIfLiked(Convert.ToInt32(Session["user_id"]),idPost))
+                {
+                    Response.Write("<script>console.log( "+ idPost.ToString() +" ) </script>");
+                }
+            }
+            
         }
 
+        private bool checkIfLiked (int userID, int postID)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db_webnc"].ConnectionString;
+            using (SqlConnection cnn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = cnn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_checkIfLiked";
+                    cmd.Parameters.AddWithValue("@postid", postID);
+                    cmd.Parameters.AddWithValue("@userid", userID);
+                    cnn.Open();
+                    SqlDataReader rd = cmd.ExecuteReader();
+                    if (rd.HasRows)
+                    {
+                        return true;
+                    }
+                    return false;
+                    cnn.Close();
+                }
+            }
+        }
 
         public void RaiseCallbackEvent(string args)
         {
@@ -191,12 +224,26 @@ namespace OurReview
                     m_callbackResult = DeletePost(Convert.ToInt32(a[1])).ToString();
                     ; break;
                 case LIKE_COMMAND_NAME:
-                    LikePost(Convert.ToInt32(a[1])) ;
-                    m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    if(Session["user_id"] != "")
+                    {
+                        LikePost(Convert.ToInt32(a[1]));
+                        m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    }
+                    else
+                    {
+                        m_callbackResult = "-1";
+                    }
                     break;
                 case UNLIKE_COMMAND_NAME:
-                    UnlikePost(Convert.ToInt32(a[1]));
-                    m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    if (Session["user_id"] != "")
+                    {
+                        UnlikePost(Convert.ToInt32(a[1]));
+                        m_callbackResult = GetLike(Convert.ToInt32(a[1])).ToString();
+                    }
+                    else
+                    {
+                        m_callbackResult = "-1";
+                    }
                     break;
             }
 
